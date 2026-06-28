@@ -1,0 +1,18 @@
+{
+    "Cola": {
+        "price": 1.5,
+        "stock": 15
+    },
+    "Chips": {
+        "price": 2.0,
+        "stock": 15
+    },
+    "Chocolate": {
+        "price": 1.2,
+        "stock": 30
+    },
+    "choco": {
+        "price": 4.0,
+        "stock": 5
+    }
+}

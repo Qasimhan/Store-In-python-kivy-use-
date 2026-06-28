@@ -1,0 +1,359 @@
+#:import MDSeparator kivymd.uix.card.MDSeparator
+#:import Window kivy.core.window.Window
+
+ScreenManager:
+    LoginScreen:
+    RegisterScreen:
+    VerifyScreen:
+    CustomerShopScreen:
+    CustomerCartScreen:
+    CustomerOrdersScreen:
+    CustomerOrderDetailScreen:
+    AdminHomeScreen:
+    AdminInventoryScreen:
+    AdminOrdersScreen:
+
+<LoginScreen>:
+    name: "login"
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(16)
+        padding: dp(18)
+
+        MDToolbar:
+            title: "Aurora Grocery POS"
+            elevation: 10
+
+        MDTabs:
+            id: login_tabs
+            on_tab_switch: app.root.get_screen('login').ids.message_label.text = ''
+
+            MDTab:
+                title: "Admin"
+                MDBoxLayout:
+                    orientation: "vertical"
+                    spacing: dp(12)
+                    padding: dp(16)
+
+                    MDTextField:
+                        id: admin_username
+                        hint_text: "Admin Username"
+                        text: "admin"
+                    MDTextField:
+                        id: admin_password
+                        hint_text: "Password"
+                        password: True
+                    MDRaisedButton:
+                        text: "Login as Admin"
+                        pos_hint: {"center_x": 0.5}
+                        on_release: app.admin_login()
+
+            MDTab:
+                title: "Customer"
+                MDBoxLayout:
+                    orientation: "vertical"
+                    spacing: dp(12)
+                    padding: dp(16)
+
+                    MDTextField:
+                        id: mobile_field
+                        hint_text: "Mobile Number"
+                        helper_text: "+92300..."
+                        helper_text_mode: "on_focus"
+                    MDTextField:
+                        id: customer_password
+                        hint_text: "Password"
+                        password: True
+                    MDRaisedButton:
+                        text: "Login as Customer"
+                        pos_hint: {"center_x": 0.5}
+                        on_release: app.customer_login()
+                    MDTextButton:
+                        text: "Register a new account"
+                        pos_hint: {"center_x": 0.5}
+                        on_release: app.go_register()
+
+        MDLabel:
+            id: message_label
+            text: ""
+            halign: "center"
+            theme_text_color: "Secondary"
+
+<RegisterScreen>:
+    name: "register"
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(16)
+        padding: dp(18)
+
+        MDToolbar:
+            title: "Customer Registration"
+            left_action_items: [["arrow-left", lambda x: app.root.current = 'login']]
+            elevation: 10
+
+        MDTextField:
+            id: reg_name
+            hint_text: "Full Name"
+        MDTextField:
+            id: reg_mobile
+            hint_text: "Mobile Number"
+        MDTextField:
+            id: reg_password
+            hint_text: "Password"
+            password: True
+        MDTextField:
+            id: reg_confirm
+            hint_text: "Confirm Password"
+            password: True
+        MDRaisedButton:
+            text: "Create Account & Send OTP"
+            pos_hint: {"center_x": 0.5}
+            on_release: app.register_customer()
+
+<VerifyScreen>:
+    name: "verify"
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(16)
+        padding: dp(18)
+
+        MDToolbar:
+            title: "Verify OTP"
+            left_action_items: [["arrow-left", lambda x: app.root.current = 'login']]
+            elevation: 10
+
+        MDLabel:
+            id: demo_label
+            text: ""
+            halign: "center"
+            theme_text_color: "Secondary"
+
+        MDTextField:
+            id: otp_field
+            hint_text: "Enter 6-digit OTP"
+            max_text_length: 6
+            input_filter: "int"
+        MDRaisedButton:
+            text: "Verify & Continue"
+            pos_hint: {"center_x": 0.5}
+            on_release: app.verify_otp()
+
+<CustomerShopScreen>:
+    name: "customer_shop"
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(12)
+        padding: dp(10)
+
+        MDToolbar:
+            title: "Shop"
+            left_action_items: [["arrow-left", lambda x: app.root.current = 'login']]
+            right_action_items: [["cart", lambda x: app.root.current = 'customer_cart'], ["format-list-bulleted", lambda x: app.root.current = 'customer_orders']]
+            elevation: 10
+
+        ScrollView:
+            MDList:
+                id: product_list
+
+<CustomerCartScreen>:
+    name: "customer_cart"
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(12)
+        padding: dp(10)
+
+        MDToolbar:
+            title: "Cart"
+            left_action_items: [["arrow-left", lambda x: app.root.current = 'customer_shop']]
+            elevation: 10
+
+        ScrollView:
+            MDList:
+                id: cart_list
+
+        MDLabel:
+            id: cart_total
+            text: "Total: $0.00"
+            halign: "right"
+
+        MDRaisedButton:
+            text: "Checkout"
+            pos_hint: {"center_x": 0.5}
+            on_release: app.checkout()
+
+<CustomerOrdersScreen>:
+    name: "customer_orders"
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(12)
+        padding: dp(10)
+
+        MDToolbar:
+            title: "My Orders"
+            left_action_items: [["arrow-left", lambda x: app.root.current = 'customer_shop']]
+            elevation: 10
+
+        ScrollView:
+            MDList:
+                id: order_list
+
+<CustomerOrderDetailScreen>:
+    name: "customer_order_detail"
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(12)
+        padding: dp(10)
+
+        MDToolbar:
+            title: "Order Detail"
+            left_action_items: [["arrow-left", lambda x: app.root.current = 'customer_orders']]
+            elevation: 10
+
+        MDLabel:
+            id: order_header
+            text: "Order #"
+            font_style: "H6"
+            halign: "left"
+
+        MDLabel:
+            id: order_status
+            text: "Status"
+            theme_text_color: "Secondary"
+            halign: "left"
+
+        ScrollView:
+            MDList:
+                id: order_items
+
+        MDLabel:
+            id: order_total
+            text: ""
+            halign: "right"
+
+<AdminHomeScreen>:
+    name: "admin_home"
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: dp(10)
+        spacing: dp(12)
+
+        MDToolbar:
+            title: "Admin Dashboard"
+            left_action_items: [["arrow-left", lambda x: app.root.current = 'login']]
+            elevation: 10
+
+        MDGridLayout:
+            cols: 2
+            adaptive_height: True
+            spacing: dp(10)
+
+            MDCard:
+                padding: dp(12)
+                MDLabel:
+                    text: "Revenue Today"
+                    theme_text_color: "Secondary"
+                MDLabel:
+                    id: revenue_today
+                    text: "$0.00"
+                    font_style: "H5"
+
+            MDCard:
+                padding: dp(12)
+                MDLabel:
+                    text: "Revenue This Month"
+                    theme_text_color: "Secondary"
+                MDLabel:
+                    id: revenue_month
+                    text: "$0.00"
+                    font_style: "H5"
+
+            MDCard:
+                padding: dp(12)
+                MDLabel:
+                    text: "Waiting Orders"
+                    theme_text_color: "Secondary"
+                MDLabel:
+                    id: waiting_orders
+                    text: "0"
+                    font_style: "H5"
+
+            MDCard:
+                padding: dp(12)
+                MDLabel:
+                    text: "Store Status"
+                    theme_text_color: "Secondary"
+                MDRectangleFlatButton:
+                    text: "Toggle Open/Closed"
+                    on_release: app.toggle_store_status()
+
+        MDLabel:
+            text: "Low Stock"
+            font_style: "Subtitle1"
+
+        MDBoxLayout:
+            orientation: "vertical"
+            id: low_stock_list
+            spacing: dp(4)
+
+        MDLabel:
+            text: "Top Sellers Today"
+            font_style: "Subtitle1"
+
+        MDBoxLayout:
+            orientation: "vertical"
+            id: top_today
+            spacing: dp(4)
+
+        MDLabel:
+            text: "Top Sellers This Month"
+            font_style: "Subtitle1"
+
+        MDBoxLayout:
+            orientation: "vertical"
+            id: top_month
+            spacing: dp(4)
+
+        MDRaisedButton:
+            text: "Inventory"
+            on_release: app.root.current = 'admin_inventory'
+
+        MDRaisedButton:
+            text: "Orders"
+            on_release: [app.admin_load_orders(), app.root.current = 'admin_orders']
+
+<AdminInventoryScreen>:
+    name: "admin_inventory"
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: dp(10)
+        spacing: dp(12)
+
+        MDToolbar:
+            title: "Inventory"
+            left_action_items: [["arrow-left", lambda x: app.root.current = 'admin_home']]
+            elevation: 10
+
+        ScrollView:
+            MDList:
+                id: inventory_list
+
+        MDRaisedButton:
+            text: "Add Sample Product"
+            pos_hint: {"center_x": 0.5}
+            on_release: app.admin_add_product()
+
+<AdminOrdersScreen>:
+    name: "admin_orders"
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: dp(10)
+        spacing: dp(12)
+
+        MDToolbar:
+            title: "Online Orders"
+            left_action_items: [["arrow-left", lambda x: app.root.current = 'admin_home']]
+            elevation: 10
+
+        ScrollView:
+            MDList:
+                id: admin_order_list
