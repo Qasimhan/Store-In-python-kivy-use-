@@ -27,8 +27,7 @@ android.api = 33
 # (int) Minimum Android API required
 android.minapi = 21
 
-# (str) Android SDK version
-android.sdk = 24
+
 
 # (str) Android NDK version
 android.ndk = 23b
